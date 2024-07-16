@@ -10,7 +10,7 @@ import Register from "./pages/register/Register";
 function App() {
 
   return (
-    <div className="min-h-screen bg-[#121212]">
+    <div className="max-h-screen bg-[#121212]">
       <Routes>
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />

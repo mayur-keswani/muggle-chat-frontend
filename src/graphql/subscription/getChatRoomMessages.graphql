@@ -1,0 +1,11 @@
+subscription getChatRoomMessages($chatRoomId: uuid!) {
+  messages(where: {chat_room_id: {_eq: $chatRoomId}}, order_by: {created_at: desc}) {
+    id
+    user_id
+    created_at
+    content
+    user {
+      username
+    }
+  }
+}

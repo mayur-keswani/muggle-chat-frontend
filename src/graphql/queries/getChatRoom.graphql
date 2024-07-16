@@ -1,0 +1,9 @@
+query getChatRooms {
+  chat_rooms {
+    id
+    name
+    user {
+      username
+    }
+  }
+}

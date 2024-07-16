@@ -1,0 +1,8 @@
+mutation sendMessageToChatRoom($chat_room_id: uuid = "", $content: String = "") {
+  insert_messages_one(object: {content: $content, chat_room_id: $chat_room_id}) {
+    chat_room_id
+    content
+    created_at
+    id
+  }
+}

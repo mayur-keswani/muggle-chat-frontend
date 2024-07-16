@@ -1,0 +1,6 @@
+mutation createChatRoom($name: String!) {
+  insert_chat_rooms_one(object: { name: $name }) {
+    id
+    name
+  }
+}

@@ -1,12 +1,24 @@
+import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCreateChatRoomMutation } from "../../lib/graphql";
 
 const CreateChatRoom = () => {
   const navigate = useNavigate();
-  const [name,setName] = useState('')
-  const onSubmitHandler = () =>{
-    navigate('/')
-  }
+  const [name, setName] = useState("");
+  const [createChatRoom, { loading }] = useCreateChatRoomMutation();
+  const onSubmitHandler = async (e:React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    try {
+      const {data} = await createChatRoom({
+        variables: {
+          name,
+        },
+      });
+      console.log({data})
+      navigate("/");
+    } catch (error) {}
+  };
 
   return (
     <div
@@ -25,20 +37,23 @@ const CreateChatRoom = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                strokeWidth="1.5"
                 stroke="currentColor"
                 aria-hidden="true"
                 className="h-6 w-6 text-white"
                 role="button"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M6 18L18 6M6 6l12 12"
                 ></path>
               </svg>
             </div>
-            <form onSubmit={onSubmitHandler} className="flex w-full flex-col gap-4 p-4 md:gap-6 md:p-6">
+            <form
+              onSubmit={onSubmitHandler}
+              className="flex w-full flex-col gap-4 p-4 md:gap-6 md:p-6"
+            >
               <div className="flex w-full flex-col items-start justify-start gap-2">
                 <label className="text-xs text-slate-200">Select a user</label>
                 <div className="w-full border-[1px] border-white pr-4">
@@ -47,24 +62,28 @@ const CreateChatRoom = () => {
                     placeholder="Enter room name"
                     autoComplete="false"
                     value={name}
-                    onChange={(e)=> {
-                        setName(e.target.value)
+                    onChange={(e) => {
+                      setName(e.target.value);
                     }}
                     className="w-full bg-[#121212] py-4 pl-4 text-white placeholder:text-gray-500 focus:outline-none"
                   />
                 </div>
               </div>
               <div className="flex w-full flex-col items-center justify-end gap-4 md:flex-row md:gap-6">
-                <button 
-                  className="w-full bg-red-500 p-3 text-center font-bold text-black shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e]"
-                  onClick={()=>{
-                    navigate('/')
-                  }}>
-                  
+                <button
+                  className="w-full p-3 text-center font-bold text-black shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e]"
+                  onClick={() => {
+                    navigate("/");
+                  }}
+                >
                   Cancel
                 </button>
-                <button type="submit" className="w-full bg-[#ae7aff] p-3 text-center font-bold text-black shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e]">
-                  Create Room
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-[#ae7aff] p-3 text-center font-bold text-black shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e]"
+                >
+                  {loading ? "Creating..." : "Create Room"}
                 </button>
               </div>
             </form>
