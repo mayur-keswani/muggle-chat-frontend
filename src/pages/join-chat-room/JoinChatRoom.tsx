@@ -2,8 +2,9 @@ import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateChatRoomMutation } from "../../lib/graphql";
+import Spinner from "../../components/commons/Spinner";
 
-const CreateChatRoom = () => {
+const JoinChatRoom = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [createChatRoom, { loading }] = useCreateChatRoomMutation();
@@ -32,7 +33,7 @@ const CreateChatRoom = () => {
         <div className="flex min-h-full items-end justify-center p-0 text-center md:items-center md:p-2">
           <div className="relative w-full transform overflow-hidden border-t-[1px] border-white bg-[#121212] text-left text-white transition-all md:my-8 md:w-full md:max-w-5xl md:border-[1px]">
             <div className="flex items-center justify-between border-b-[1px] border-white p-4">
-              <p className="text-xl font-bold">Create Room</p>
+              <p className="text-xl font-bold">Join Room</p>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -42,6 +43,9 @@ const CreateChatRoom = () => {
                 aria-hidden="true"
                 className="h-6 w-6 text-white"
                 role="button"
+                onClick={() => {
+                    navigate("/");
+                  }}
               >
                 <path
                   strokeLinecap="round"
@@ -55,11 +59,11 @@ const CreateChatRoom = () => {
               className="flex w-full flex-col gap-4 p-4 md:gap-6 md:p-6"
             >
               <div className="flex w-full flex-col items-start justify-start gap-2">
-                <label className="text-xs text-slate-200">Select a user</label>
+                <label className="text-xs text-slate-200">Room Code</label>
                 <div className="w-full border-[1px] border-white pr-4">
                   <input
                     type="text"
-                    placeholder="Enter room name"
+                    placeholder="Enter room code nuumber ..."
                     autoComplete="false"
                     value={name}
                     onChange={(e) => {
@@ -71,7 +75,7 @@ const CreateChatRoom = () => {
               </div>
               <div className="flex w-full flex-col items-center justify-end gap-4 md:flex-row md:gap-6">
                 <button
-                  className="w-full p-3 text-center font-bold text-black shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e]"
+                  className="w-full p-3 text-center font-bold shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e]"
                   onClick={() => {
                     navigate("/");
                   }}
@@ -83,7 +87,7 @@ const CreateChatRoom = () => {
                   disabled={loading}
                   className="w-full bg-[#ae7aff] p-3 text-center font-bold text-black shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e]"
                 >
-                  {loading ? "Creating..." : "Create Room"}
+                  {loading ? <Spinner/> : "Join Room"}
                 </button>
               </div>
             </form>
@@ -94,4 +98,4 @@ const CreateChatRoom = () => {
   );
 };
 
-export default CreateChatRoom;
+export default JoinChatRoom;

@@ -7,9 +7,10 @@ import Spinner from "../commons/Spinner";
 
 type MessagePropsType = {
   selectedRoom: { id: string; name: string };
+  toggleSidedrawer:(e:React.FormEvent)=>void;
 };
 
-const Messages = ({ selectedRoom }: MessagePropsType) => {
+const Messages = ({ selectedRoom,toggleSidedrawer }: MessagePropsType) => {
   const [content, setContent] = useState("");
 
   const { data, loading: isMessagesLoading } =
@@ -51,7 +52,8 @@ const Messages = ({ selectedRoom }: MessagePropsType) => {
               strokeWidth="1.5"
               stroke="currentColor"
               aria-hidden="true"
-              className="h-5 w-5 text-white"
+              className="h-5 w-5 text-purple-700"
+              onClick={toggleSidedrawer}
             >
               <path
                 strokeLinecap="round"

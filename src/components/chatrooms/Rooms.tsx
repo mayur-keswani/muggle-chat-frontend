@@ -9,6 +9,7 @@ type RoomsPropsType = {
     };
   }[];
   onSelect: (selectedRoomId: string, selectedRoomName: string) => void;
+
   selectedRoomId: string | null;
 };
 
@@ -16,7 +17,6 @@ const Rooms = ({ rooms, onSelect, selectedRoomId }: RoomsPropsType) => {
   const [searchedText, setSearchedText] = useState("");
 
   const filteredRooms = useMemo(() => {
-    console.log({ rooms, searchedText });
     if (searchedText)
       return rooms.filter((room) =>
         room.name?.toLowerCase()?.includes(searchedText?.toLocaleLowerCase())
@@ -25,7 +25,7 @@ const Rooms = ({ rooms, onSelect, selectedRoomId }: RoomsPropsType) => {
   }, [searchedText, rooms]);
 
   return (
-    <div className="top-[77px] z-10 h-full w-full border-white bg-[#121212] transition-all duration-300 ease-in-out peer-focus:right-0 md:static md:block md:w-[30%] md:border-r-[1px]">
+    <>
       <div className="flex w-full items-center justify-start gap-2 border-b-[1px] border-white p-4">
         <input
           placeholder="Search chat..."
@@ -98,7 +98,7 @@ const Rooms = ({ rooms, onSelect, selectedRoomId }: RoomsPropsType) => {
           </li>
         ))}
       </ul>
-    </div>
+    </>
   );
 };
 

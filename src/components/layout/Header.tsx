@@ -15,7 +15,7 @@ const Header = () => {
           strokeWidth="1.5"
           stroke="currentColor"
           aria-hidden="true"
-          className="h-6 w-6 text-white md:h-8 md:w-8">
+          className="h-6 w-6 text-purple-700 md:h-8 md:w-8">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -23,12 +23,20 @@ const Header = () => {
         </svg>
         <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full p-1 text-sm text-white md:h-5 md:w-5 md:text-base">4</span>
       </span>
-      <div className="h-11 w-11 rounded-full border-2 border-white">
+      {/* <div className="h-11 w-11 rounded-full border-2 border-white">
         <img
           src="https://images.pexels.com/photos/18148932/pexels-photo-18148932/free-photo-of-bench-city-man-people.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
           alt="avatar"
           className="h-10 w-10 rounded-full object-cover" />
-      </div>
+      </div> */}
+      <button 
+        className="hidden w-max items-center justify-center border-[1px] border-white p-3 text-center font-bold text-white md:inline-flex"
+        onClick={()=>{
+          navigate('/join-chat-room')
+        }}>
+       
+        Join Chat Room
+      </button>
       <button 
         className="hidden w-max items-center justify-center border-[1px] border-white p-3 text-center font-bold text-white md:inline-flex"
         onClick={()=>{
