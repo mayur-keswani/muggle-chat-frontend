@@ -14,7 +14,7 @@ import { getMainDefinition } from "@apollo/client/utilities";
 
 const getConnectionURL = (connectionType: "socket" | "http"): string => {
   let baseUrl = process.env.REACT_APP_HASURA_URL;
-  console.log({ baseUrl });
+  
   if (!baseUrl || !baseUrl.includes("http")) {
     return "";
   } else if (connectionType === "socket") {
@@ -25,10 +25,12 @@ const getConnectionURL = (connectionType: "socket" | "http"): string => {
 };
 
 const getToken = () => {
-  return (
-    localStorage.getItem("access_token") ??
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInVzZXIiLCJzdXBlcmFkbWluIl0sIngtaGFzdXJhLXVzZXItaWQiOiJmZjRiYWNhNS01ZTk3LTQ4N2EtYmQzMi02MTU3ZjkwNDhhYmUifX0.wWoazR2D7Nh0K1GeXpb_RAjvvGc8hMftN3IHHLlnr5o"
-  );
+  const storedAuth = localStorage.getItem("auth");
+  if (storedAuth) {
+      let parsedAuth = JSON.parse(storedAuth);
+      return parsedAuth.accessToken;
+  }
+  return null;
 };
 
 const authLink = setContext(
@@ -94,7 +96,6 @@ const splitLink = wsLink
 
 const getApolloLinks = (): (ApolloLink | RequestHandler)[] => {
   const Links = [];
-  console.log({ splitLink });
   Links.push(authLink);
   Links.push(splitLink);
   return Links;

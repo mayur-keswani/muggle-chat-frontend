@@ -14,7 +14,7 @@ const Dashboard = () => {
     name: string;
   } | null>(null);
   const [toggleSidedrawer, setToggleSidedrawer] = useState(false);
-  console.log({ toggleSidedrawer });
+  
   return (
     <main>
       {loading ? (

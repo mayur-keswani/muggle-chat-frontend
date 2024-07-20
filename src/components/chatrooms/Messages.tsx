@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   useGetChatRoomMessagesSubscription,
   useSendMessageToChatRoomMutation,
 } from "../../lib/graphql";
 import Spinner from "../commons/Spinner";
+import { AuthContext } from "../../context/AuthContext";
 
 type MessagePropsType = {
   selectedRoom: { id: string; name: string };
@@ -12,6 +13,7 @@ type MessagePropsType = {
 
 const Messages = ({ selectedRoom,toggleSidedrawer }: MessagePropsType) => {
   const [content, setContent] = useState("");
+  const {user} =useContext(AuthContext)
 
   const { data, loading: isMessagesLoading } =
     useGetChatRoomMessagesSubscription({
@@ -39,7 +41,7 @@ const Messages = ({ selectedRoom,toggleSidedrawer }: MessagePropsType) => {
     } catch (error) {}
   };
 
-  console.log({ data });
+  // console.log({ data });
   return (
     <>
       <div className="flex w-full items-center justify-between gap-2 border-b-[1px] p-4">
@@ -113,11 +115,15 @@ const Messages = ({ selectedRoom,toggleSidedrawer }: MessagePropsType) => {
               <div
                 key={message?.id}
                 className={`flex min-w-[150px] max-w-[80%] items-start justify-start gap-2 text-white md:max-w-[70%] ${
-                  message.user_id && "ml-auto flex-row-reverse"
+                  message.user_id === user.userId && "ml-auto flex-row-reverse"
                 }`}
               >
                 <div className="flex w-full max-w-[70%] flex-col gap-2">
-                  <p className="text-xs">{message.user_id ? '' :message?.user?.username}</p>
+                  <div className="flex flex-row justify-start space-x-2 items-center">
+                  <p className="text-xs">{message.user_id=== user.userId ? 'you' :message?.user?.username}</p>
+                  <p className="text-xs text-gray-500">- {new Date(message.created_at).toLocaleTimeString()}</p>
+                  </div> 
+                  
                   <div className="relative w-fit bg-[#343434] p-3 text-sm after:absolute after:left-0 after:top-0 after:border-r-[15px] after:border-t-[15px] after:border-r-transparent after:border-t-[#121212]">
                     <div className="flex w-full items-center justify-center px-2">
                       {message.content}

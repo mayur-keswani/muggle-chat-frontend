@@ -15,7 +15,7 @@ const CreateChatRoom = () => {
           name,
         },
       });
-      console.log({data})
+      
       navigate("/");
     } catch (error) {}
   };

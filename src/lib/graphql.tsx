@@ -32,6 +32,40 @@ export type Int_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
+export type LoginInput = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+export type LoginOutput = {
+  __typename?: 'LoginOutput';
+  accessToken: Scalars['String']['output'];
+  email: Scalars['String']['output'];
+  roleType: RoleType;
+  userId: Scalars['String']['output'];
+  username: Scalars['String']['output'];
+};
+
+export type RegisterInput = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+  username: Scalars['String']['input'];
+};
+
+export type RegisterOutput = {
+  __typename?: 'RegisterOutput';
+  accessToken: Scalars['String']['output'];
+  email: Scalars['String']['output'];
+  roleType: RoleType;
+  userId: Scalars['String']['output'];
+  username: Scalars['String']['output'];
+};
+
+export enum RoleType {
+  Superuser = 'superuser',
+  User = 'user'
+}
+
 /** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
 export type String_Comparison_Exp = {
   _eq?: InputMaybe<Scalars['String']['input']>;
@@ -620,6 +654,8 @@ export type Mutation_Root = {
   insert_users?: Maybe<Users_Mutation_Response>;
   /** insert a single row into the table: "users" */
   insert_users_one?: Maybe<Users>;
+  login?: Maybe<LoginOutput>;
+  register: RegisterOutput;
   /** update data of the table: "chat_rooms" */
   update_chat_rooms?: Maybe<Chat_Rooms_Mutation_Response>;
   /** update single row of the table: "chat_rooms" */
@@ -780,6 +816,18 @@ export type Mutation_RootInsert_UsersArgs = {
 export type Mutation_RootInsert_Users_OneArgs = {
   object: Users_Insert_Input;
   on_conflict?: InputMaybe<Users_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootLoginArgs = {
+  credentials: LoginInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootRegisterArgs = {
+  credentials: RegisterInput;
 };
 
 
@@ -2003,6 +2051,23 @@ export type CreateChatRoomMutationVariables = Exact<{
 
 export type CreateChatRoomMutation = { __typename?: 'mutation_root', insert_chat_rooms_one?: { __typename?: 'chat_rooms', id: any, name: string } | null };
 
+export type LoginMutationVariables = Exact<{
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+}>;
+
+
+export type LoginMutation = { __typename?: 'mutation_root', login?: { __typename?: 'LoginOutput', userId: string, email: string, accessToken: string, username: string, roleType: RoleType } | null };
+
+export type RegisterMutationVariables = Exact<{
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+  username: Scalars['String']['input'];
+}>;
+
+
+export type RegisterMutation = { __typename?: 'mutation_root', register: { __typename?: 'RegisterOutput', email: string, accessToken: string, roleType: RoleType, userId: string, username: string } };
+
 export type SendMessageToChatRoomMutationVariables = Exact<{
   chat_room_id?: InputMaybe<Scalars['uuid']['input']>;
   content?: InputMaybe<Scalars['String']['input']>;
@@ -2017,7 +2082,7 @@ export type GetChatRoomsQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetChatRoomsQuery = { __typename?: 'query_root', chat_rooms: Array<{ __typename?: 'chat_rooms', id: any, name: string, user: { __typename?: 'users', username?: string | null } }> };
 
 export type GetChatRoomMessagesSubscriptionVariables = Exact<{
-  chatRoomId?: InputMaybe<Scalars['uuid']['input']>;
+  chatRoomId: Scalars['uuid']['input'];
 }>;
 
 
@@ -2058,6 +2123,83 @@ export function useCreateChatRoomMutation(baseOptions?: Apollo.MutationHookOptio
 export type CreateChatRoomMutationHookResult = ReturnType<typeof useCreateChatRoomMutation>;
 export type CreateChatRoomMutationResult = Apollo.MutationResult<CreateChatRoomMutation>;
 export type CreateChatRoomMutationOptions = Apollo.BaseMutationOptions<CreateChatRoomMutation, CreateChatRoomMutationVariables>;
+export const LoginDocument = gql`
+    mutation login($email: String!, $password: String!) {
+  login(credentials: {email: $email, password: $password}) {
+    userId
+    email
+    accessToken
+    username
+    roleType
+  }
+}
+    `;
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
+
+/**
+ * __useLoginMutation__
+ *
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginMutation, { data, loading, error }] = useLoginMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
+      }
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
+export const RegisterDocument = gql`
+    mutation register($email: String!, $password: String!, $username: String!) {
+  register(credentials: {email: $email, password: $password, username: $username}) {
+    email
+    accessToken
+    roleType
+    userId
+    username
+  }
+}
+    `;
+export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
+
+/**
+ * __useRegisterMutation__
+ *
+ * To run a mutation, you first call `useRegisterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerMutation, { data, loading, error }] = useRegisterMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *      username: // value for 'username'
+ *   },
+ * });
+ */
+export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options);
+      }
+export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
+export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const SendMessageToChatRoomDocument = gql`
     mutation sendMessageToChatRoom($chat_room_id: uuid = "", $content: String = "") {
   insert_messages_one(object: {content: $content, chat_room_id: $chat_room_id}) {
@@ -2139,7 +2281,7 @@ export type GetChatRoomsLazyQueryHookResult = ReturnType<typeof useGetChatRoomsL
 export type GetChatRoomsSuspenseQueryHookResult = ReturnType<typeof useGetChatRoomsSuspenseQuery>;
 export type GetChatRoomsQueryResult = Apollo.QueryResult<GetChatRoomsQuery, GetChatRoomsQueryVariables>;
 export const GetChatRoomMessagesDocument = gql`
-    subscription getChatRoomMessages($chatRoomId: uuid) {
+    subscription getChatRoomMessages($chatRoomId: uuid!) {
   messages(
     where: {chat_room_id: {_eq: $chatRoomId}}
     order_by: {created_at: desc}
@@ -2171,7 +2313,7 @@ export const GetChatRoomMessagesDocument = gql`
  *   },
  * });
  */
-export function useGetChatRoomMessagesSubscription(baseOptions?: Apollo.SubscriptionHookOptions<GetChatRoomMessagesSubscription, GetChatRoomMessagesSubscriptionVariables>) {
+export function useGetChatRoomMessagesSubscription(baseOptions: Apollo.SubscriptionHookOptions<GetChatRoomMessagesSubscription, GetChatRoomMessagesSubscriptionVariables> & ({ variables: GetChatRoomMessagesSubscriptionVariables; skip?: boolean; } | { skip: boolean; }) ) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useSubscription<GetChatRoomMessagesSubscription, GetChatRoomMessagesSubscriptionVariables>(GetChatRoomMessagesDocument, options);
       }
