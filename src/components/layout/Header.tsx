@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { AuthContext } from '../../context/AuthContext'
 
 const Header = () => {
+  const {user} = useContext(AuthContext)
   const navigate = useNavigate()
   return (
     <header className="fixed top-0 z-10 mx-auto flex w-full max-w-full items-center justify-between border-b-[1px] border-b-slate-300 bg-[#121212] p-4 text-white lg:px-10">
     <h1 className="text-xl font-extrabold md:text-3xl">Muggle Discord</h1>
     <div className="flex w-max flex-shrink-0 items-center justify-end gap-6">
-      <span className="relative">
+      {/* <span className="relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -22,21 +24,21 @@ const Header = () => {
             d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"></path>
         </svg>
         <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full p-1 text-sm text-white md:h-5 md:w-5 md:text-base">4</span>
-      </span>
+      </span> */}
       {/* <div className="h-11 w-11 rounded-full border-2 border-white">
         <img
           src="https://images.pexels.com/photos/18148932/pexels-photo-18148932/free-photo-of-bench-city-man-people.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
           alt="avatar"
           className="h-10 w-10 rounded-full object-cover" />
       </div> */}
-      <button 
+      {/* <button 
         className="hidden w-max items-center justify-center border-[1px] border-white p-3 text-center font-bold text-white md:inline-flex"
         onClick={()=>{
           navigate('/join-chat-room')
         }}>
        
         Join Chat Room
-      </button>
+      </button> */}
       <button 
         className="hidden w-max items-center justify-center border-[1px] border-white p-3 text-center font-bold text-white md:inline-flex"
         onClick={()=>{
@@ -55,6 +57,7 @@ const Header = () => {
         </svg>
         Create Chat Room
       </button>
+      <p>Hello, <span className='text-purple-700'>{user.username}</span></p>
     </div>
   </header>
   )

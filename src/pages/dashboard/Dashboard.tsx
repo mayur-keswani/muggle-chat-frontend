@@ -1,20 +1,33 @@
-import React, { useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import NoChatRooms from "../../components/chatrooms/NoChatRooms";
 import Rooms from "../../components/chatrooms/Rooms";
 import Messages from "../../components/chatrooms/Messages";
 import { useQuery } from "@apollo/client";
-import { useGetChatRoomsQuery } from "../../lib/graphql";
+import { useGetChatRoomMessagesSubscription, useGetChatRoomsQuery, useGetJoinedChatRoomsSubscription } from "../../lib/graphql";
+import { AuthContext } from "../../context/AuthContext";
+import { FOCUSABLE_SELECTOR } from "@testing-library/user-event/dist/utils";
 
 const Dashboard = () => {
+  const {user} =useContext(AuthContext)
   const { data, loading, error } = useGetChatRoomsQuery({
     fetchPolicy: "no-cache",
   });
+  
+  const {data:joinedChatRoom} = useGetJoinedChatRoomsSubscription({variables:{user_id:user.userId}})
+  
   const [selectedRoom, setSelectedRoom] = useState<{
     id: string;
     name: string;
+    isMember:boolean;
   } | null>(null);
   const [toggleSidedrawer, setToggleSidedrawer] = useState(false);
-  
+  useEffect(()=>{
+    if(joinedChatRoom && joinedChatRoom?.chat_rooms?.length>0 && selectedRoom?.id){
+      console.log(joinedChatRoom?.chat_rooms)
+      let isMember = joinedChatRoom.chat_rooms.findIndex(room=>room.id===selectedRoom?.id)>=0
+      setSelectedRoom({...selectedRoom,isMember})
+    }
+  },[joinedChatRoom,selectedRoom?.id])
   return (
     <main>
       {loading ? (
@@ -27,7 +40,11 @@ const Dashboard = () => {
               rooms={data?.chat_rooms}
               onSelect={(selectedRoomId: string, selectedRoomName: string) => {
                 setToggleSidedrawer(false);
-                setSelectedRoom({ id: selectedRoomId, name: selectedRoomName });
+                let isMember = false;
+                if(joinedChatRoom && joinedChatRoom?.chat_rooms.length>0){
+                  isMember = joinedChatRoom.chat_rooms.findIndex(room=>room.id===selectedRoomId)>=0
+                }
+                setSelectedRoom({ id: selectedRoomId, name: selectedRoomName,isMember });
               }}
               selectedRoomId={selectedRoom?.id ?? null}
             />
@@ -45,6 +62,7 @@ const Dashboard = () => {
                   e.preventDefault();
                   setToggleSidedrawer(true);
                 }}
+                
               />
             </div>
           )}

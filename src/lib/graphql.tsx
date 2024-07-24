@@ -19,6 +19,19 @@ export type Scalars = {
   uuid: { input: any; output: any; }
 };
 
+/** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
+export type Boolean_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['Boolean']['input']>;
+  _gt?: InputMaybe<Scalars['Boolean']['input']>;
+  _gte?: InputMaybe<Scalars['Boolean']['input']>;
+  _in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['Boolean']['input']>;
+  _lte?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<Scalars['Boolean']['input']>;
+  _nin?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+};
+
 /** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
 export type Int_Comparison_Exp = {
   _eq?: InputMaybe<Scalars['Int']['input']>;
@@ -105,11 +118,13 @@ export type Chat_Rooms = {
   created_at: Scalars['timestamptz']['output'];
   created_by: Scalars['uuid']['output'];
   id: Scalars['uuid']['output'];
+  is_public?: Maybe<Scalars['Boolean']['output']>;
   /** An array relationship */
   messages: Array<Messages>;
   /** An aggregate relationship */
   messages_aggregate: Messages_Aggregate;
   name: Scalars['String']['output'];
+  room_code?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   /** An object relationship */
   user: Users;
@@ -167,7 +182,23 @@ export type Chat_Rooms_Aggregate = {
 };
 
 export type Chat_Rooms_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Chat_Rooms_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Chat_Rooms_Aggregate_Bool_Exp_Bool_Or>;
   count?: InputMaybe<Chat_Rooms_Aggregate_Bool_Exp_Count>;
+};
+
+export type Chat_Rooms_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Chat_Rooms_Select_Column_Chat_Rooms_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Chat_Rooms_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Chat_Rooms_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Chat_Rooms_Select_Column_Chat_Rooms_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Chat_Rooms_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
 };
 
 export type Chat_Rooms_Aggregate_Bool_Exp_Count = {
@@ -214,9 +245,11 @@ export type Chat_Rooms_Bool_Exp = {
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   created_by?: InputMaybe<Uuid_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  is_public?: InputMaybe<Boolean_Comparison_Exp>;
   messages?: InputMaybe<Messages_Bool_Exp>;
   messages_aggregate?: InputMaybe<Messages_Aggregate_Bool_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
+  room_code?: InputMaybe<String_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   user?: InputMaybe<Users_Bool_Exp>;
   user_chat_rooms?: InputMaybe<User_Chat_Rooms_Bool_Exp>;
@@ -226,7 +259,9 @@ export type Chat_Rooms_Bool_Exp = {
 /** unique or primary key constraints on table "chat_rooms" */
 export enum Chat_Rooms_Constraint {
   /** unique or primary key constraint on columns "id" */
-  ChatRoomsPkey = 'chat_rooms_pkey'
+  ChatRoomsPkey = 'chat_rooms_pkey',
+  /** unique or primary key constraint on columns "room_code" */
+  ChatRoomsRoomCodeKey = 'chat_rooms_room_code_key'
 }
 
 /** input type for inserting data into table "chat_rooms" */
@@ -234,8 +269,10 @@ export type Chat_Rooms_Insert_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   created_by?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  is_public?: InputMaybe<Scalars['Boolean']['input']>;
   messages?: InputMaybe<Messages_Arr_Rel_Insert_Input>;
   name?: InputMaybe<Scalars['String']['input']>;
+  room_code?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user?: InputMaybe<Users_Obj_Rel_Insert_Input>;
   user_chat_rooms?: InputMaybe<User_Chat_Rooms_Arr_Rel_Insert_Input>;
@@ -248,6 +285,7 @@ export type Chat_Rooms_Max_Fields = {
   created_by?: Maybe<Scalars['uuid']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  room_code?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
@@ -257,6 +295,7 @@ export type Chat_Rooms_Max_Order_By = {
   created_by?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
+  room_code?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
 
@@ -267,6 +306,7 @@ export type Chat_Rooms_Min_Fields = {
   created_by?: Maybe<Scalars['uuid']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  room_code?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
@@ -276,6 +316,7 @@ export type Chat_Rooms_Min_Order_By = {
   created_by?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
+  room_code?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
 
@@ -307,8 +348,10 @@ export type Chat_Rooms_Order_By = {
   created_at?: InputMaybe<Order_By>;
   created_by?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  is_public?: InputMaybe<Order_By>;
   messages_aggregate?: InputMaybe<Messages_Aggregate_Order_By>;
   name?: InputMaybe<Order_By>;
+  room_code?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user?: InputMaybe<Users_Order_By>;
   user_chat_rooms_aggregate?: InputMaybe<User_Chat_Rooms_Aggregate_Order_By>;
@@ -328,9 +371,25 @@ export enum Chat_Rooms_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  IsPublic = 'is_public',
+  /** column name */
   Name = 'name',
   /** column name */
+  RoomCode = 'room_code',
+  /** column name */
   UpdatedAt = 'updated_at'
+}
+
+/** select "chat_rooms_aggregate_bool_exp_bool_and_arguments_columns" columns of table "chat_rooms" */
+export enum Chat_Rooms_Select_Column_Chat_Rooms_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  IsPublic = 'is_public'
+}
+
+/** select "chat_rooms_aggregate_bool_exp_bool_or_arguments_columns" columns of table "chat_rooms" */
+export enum Chat_Rooms_Select_Column_Chat_Rooms_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  IsPublic = 'is_public'
 }
 
 /** input type for updating data in table "chat_rooms" */
@@ -338,7 +397,9 @@ export type Chat_Rooms_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   created_by?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  is_public?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  room_code?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
@@ -355,7 +416,9 @@ export type Chat_Rooms_Stream_Cursor_Value_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   created_by?: InputMaybe<Scalars['uuid']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  is_public?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  room_code?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
@@ -368,7 +431,11 @@ export enum Chat_Rooms_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  IsPublic = 'is_public',
+  /** column name */
   Name = 'name',
+  /** column name */
+  RoomCode = 'room_code',
   /** column name */
   UpdatedAt = 'updated_at'
 }
@@ -2051,6 +2118,13 @@ export type CreateChatRoomMutationVariables = Exact<{
 
 export type CreateChatRoomMutation = { __typename?: 'mutation_root', insert_chat_rooms_one?: { __typename?: 'chat_rooms', id: any, name: string } | null };
 
+export type JoinChatRoomMutationVariables = Exact<{
+  chat_room_id: Scalars['uuid']['input'];
+}>;
+
+
+export type JoinChatRoomMutation = { __typename?: 'mutation_root', insert_user_chat_rooms_one?: { __typename?: 'user_chat_rooms', id: any, chat_room_id: any, joined_at: any } | null };
+
 export type LoginMutationVariables = Exact<{
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -2088,6 +2162,13 @@ export type GetChatRoomMessagesSubscriptionVariables = Exact<{
 
 export type GetChatRoomMessagesSubscription = { __typename?: 'subscription_root', messages: Array<{ __typename?: 'messages', id: any, user_id: any, created_at: any, content?: string | null, user: { __typename?: 'users', username?: string | null } }> };
 
+export type GetJoinedChatRoomsSubscriptionVariables = Exact<{
+  user_id: Scalars['uuid']['input'];
+}>;
+
+
+export type GetJoinedChatRoomsSubscription = { __typename?: 'subscription_root', chat_rooms: Array<{ __typename?: 'chat_rooms', id: any, name: string, created_by: any }> };
+
 
 export const CreateChatRoomDocument = gql`
     mutation createChatRoom($name: String!) {
@@ -2123,6 +2204,41 @@ export function useCreateChatRoomMutation(baseOptions?: Apollo.MutationHookOptio
 export type CreateChatRoomMutationHookResult = ReturnType<typeof useCreateChatRoomMutation>;
 export type CreateChatRoomMutationResult = Apollo.MutationResult<CreateChatRoomMutation>;
 export type CreateChatRoomMutationOptions = Apollo.BaseMutationOptions<CreateChatRoomMutation, CreateChatRoomMutationVariables>;
+export const JoinChatRoomDocument = gql`
+    mutation joinChatRoom($chat_room_id: uuid!) {
+  insert_user_chat_rooms_one(object: {chat_room_id: $chat_room_id}) {
+    id
+    chat_room_id
+    joined_at
+  }
+}
+    `;
+export type JoinChatRoomMutationFn = Apollo.MutationFunction<JoinChatRoomMutation, JoinChatRoomMutationVariables>;
+
+/**
+ * __useJoinChatRoomMutation__
+ *
+ * To run a mutation, you first call `useJoinChatRoomMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useJoinChatRoomMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [joinChatRoomMutation, { data, loading, error }] = useJoinChatRoomMutation({
+ *   variables: {
+ *      chat_room_id: // value for 'chat_room_id'
+ *   },
+ * });
+ */
+export function useJoinChatRoomMutation(baseOptions?: Apollo.MutationHookOptions<JoinChatRoomMutation, JoinChatRoomMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<JoinChatRoomMutation, JoinChatRoomMutationVariables>(JoinChatRoomDocument, options);
+      }
+export type JoinChatRoomMutationHookResult = ReturnType<typeof useJoinChatRoomMutation>;
+export type JoinChatRoomMutationResult = Apollo.MutationResult<JoinChatRoomMutation>;
+export type JoinChatRoomMutationOptions = Apollo.BaseMutationOptions<JoinChatRoomMutation, JoinChatRoomMutationVariables>;
 export const LoginDocument = gql`
     mutation login($email: String!, $password: String!) {
   login(credentials: {email: $email, password: $password}) {
@@ -2319,3 +2435,35 @@ export function useGetChatRoomMessagesSubscription(baseOptions: Apollo.Subscript
       }
 export type GetChatRoomMessagesSubscriptionHookResult = ReturnType<typeof useGetChatRoomMessagesSubscription>;
 export type GetChatRoomMessagesSubscriptionResult = Apollo.SubscriptionResult<GetChatRoomMessagesSubscription>;
+export const GetJoinedChatRoomsDocument = gql`
+    subscription getJoinedChatRooms($user_id: uuid!) {
+  chat_rooms(where: {user_chat_rooms: {user_id: {_eq: $user_id}}}) {
+    id
+    name
+    created_by
+  }
+}
+    `;
+
+/**
+ * __useGetJoinedChatRoomsSubscription__
+ *
+ * To run a query within a React component, call `useGetJoinedChatRoomsSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGetJoinedChatRoomsSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetJoinedChatRoomsSubscription({
+ *   variables: {
+ *      user_id: // value for 'user_id'
+ *   },
+ * });
+ */
+export function useGetJoinedChatRoomsSubscription(baseOptions: Apollo.SubscriptionHookOptions<GetJoinedChatRoomsSubscription, GetJoinedChatRoomsSubscriptionVariables> & ({ variables: GetJoinedChatRoomsSubscriptionVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<GetJoinedChatRoomsSubscription, GetJoinedChatRoomsSubscriptionVariables>(GetJoinedChatRoomsDocument, options);
+      }
+export type GetJoinedChatRoomsSubscriptionHookResult = ReturnType<typeof useGetJoinedChatRoomsSubscription>;
+export type GetJoinedChatRoomsSubscriptionResult = Apollo.SubscriptionResult<GetJoinedChatRoomsSubscription>;

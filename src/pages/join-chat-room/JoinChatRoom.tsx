@@ -16,7 +16,6 @@ const JoinChatRoom = () => {
           name,
         },
       });
-      console.log({data})
       navigate("/");
     } catch (error) {}
   };
