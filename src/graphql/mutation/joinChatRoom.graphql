@@ -1,0 +1,7 @@
+mutation joinChatRoom($chat_room_id: uuid!) {
+  insert_user_chat_rooms_one(object: {chat_room_id: $chat_room_id}) {
+    id
+    chat_room_id
+    joined_at
+  }
+}

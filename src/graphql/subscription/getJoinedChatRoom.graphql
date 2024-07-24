@@ -1,0 +1,7 @@
+subscription getJoinedChatRooms($user_id: uuid!) {
+  chat_rooms(where: {user_chat_rooms: {user_id: {_eq: $user_id}}}) {
+    id
+    name
+    created_by
+  }
+}
