@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useEffect, useState } from "react";
+import { createContext, PropsWithChildren, useState } from "react";
 import { RoleType } from "../lib/graphql";
 
 type AuthContextType = {
@@ -10,6 +10,7 @@ type AuthContextType = {
     roleType: RoleType;
     accessToken: string;
   }) => void;
+  onLogout:()=>void
 };
 type InitialUserType = {
   userId: null | string;
@@ -36,6 +37,7 @@ export const AuthContext = createContext<AuthContextType>({
     roleType: RoleType;
     accessToken: string;
   }) => {},
+  onLogout:()=>{}
 });
 
 const AuthProvider = (props: PropsWithChildren) => {
@@ -83,7 +85,7 @@ const AuthProvider = (props: PropsWithChildren) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, updateUser }}>
+    <AuthContext.Provider value={{ user, updateUser, onLogout }}>
       {props.children}
     </AuthContext.Provider>
   );

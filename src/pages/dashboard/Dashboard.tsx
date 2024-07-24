@@ -1,17 +1,13 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import NoChatRooms from "../../components/chatrooms/NoChatRooms";
 import Rooms from "../../components/chatrooms/Rooms";
 import Messages from "../../components/chatrooms/Messages";
-import { useQuery } from "@apollo/client";
-import { useGetChatRoomMessagesSubscription, useGetChatRoomsQuery, useGetJoinedChatRoomsSubscription } from "../../lib/graphql";
+import { useGetChatRoomsSubscription, useGetJoinedChatRoomsSubscription } from "../../lib/graphql";
 import { AuthContext } from "../../context/AuthContext";
-import { FOCUSABLE_SELECTOR } from "@testing-library/user-event/dist/utils";
 
 const Dashboard = () => {
   const {user} =useContext(AuthContext)
-  const { data, loading, error } = useGetChatRoomsQuery({
-    fetchPolicy: "no-cache",
-  });
+  const { data, loading, error } = useGetChatRoomsSubscription();
   
   const {data:joinedChatRoom} = useGetJoinedChatRoomsSubscription({variables:{user_id:user.userId}})
   
@@ -19,8 +15,10 @@ const Dashboard = () => {
     id: string;
     name: string;
     isMember:boolean;
+    amICreator:boolean;
   } | null>(null);
   const [toggleSidedrawer, setToggleSidedrawer] = useState(false);
+
   useEffect(()=>{
     if(joinedChatRoom && joinedChatRoom?.chat_rooms?.length>0 && selectedRoom?.id){
       console.log(joinedChatRoom?.chat_rooms)
@@ -28,23 +26,24 @@ const Dashboard = () => {
       setSelectedRoom({...selectedRoom,isMember})
     }
   },[joinedChatRoom,selectedRoom?.id])
+
   return (
-    <main>
+    <main className="relative h-[calc(100vh-77px)] w-full top-[77px] md:mt-[83px] md:h-[calc(100vh-83px)] bg-[#121212] ">
       {loading ? (
         <div>Loading ...</div>
       ) : data?.chat_rooms && data?.chat_rooms?.length > 0 ? (
-        <div className="flex h-[calc(100vh-77px)] w-full items-center justify-start overflow-hidden p-0 md:mt-[83px] md:h-[calc(100vh-83px)]">
+        <div className="flex h-full w-full items-center justify-start overflow-hidden p-0 ">
           
-          <div className={`top-[77px] h-full ${(toggleSidedrawer)?'w-full': (!toggleSidedrawer && selectedRoom?.id) && 'hidden'} border-white bg-[#121212] transition-all duration-300 ease-in-out peer-focus:right-0 md:static md:block md:w-[30%] md:border-r-[1px]`}>
+          <div className={` h-full ${(toggleSidedrawer)?'w-full': (!toggleSidedrawer && selectedRoom?.id) ? 'hidden' : 'w-full'} border-white transition-all duration-300 ease-in-out peer-focus:right-0 md:block md:w-[30%] md:border-r-[1px]`}>
             <Rooms
               rooms={data?.chat_rooms}
-              onSelect={(selectedRoomId: string, selectedRoomName: string) => {
+              onSelect={(selectedRoomId: string, selectedRoomName: string, selectedRoomCreatorId:string) => {
                 setToggleSidedrawer(false);
                 let isMember = false;
                 if(joinedChatRoom && joinedChatRoom?.chat_rooms.length>0){
                   isMember = joinedChatRoom.chat_rooms.findIndex(room=>room.id===selectedRoomId)>=0
                 }
-                setSelectedRoom({ id: selectedRoomId, name: selectedRoomName,isMember });
+                setSelectedRoom({ id: selectedRoomId, name: selectedRoomName,isMember,amICreator: selectedRoomCreatorId === user.userId});
               }}
               selectedRoomId={selectedRoom?.id ?? null}
             />
@@ -61,6 +60,9 @@ const Dashboard = () => {
                 toggleSidedrawer={(e: React.FormEvent) => {
                   e.preventDefault();
                   setToggleSidedrawer(true);
+                }}
+                onDeleteChatRoom={()=>{
+                  setSelectedRoom(null)
                 }}
                 
               />

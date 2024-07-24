@@ -1,0 +1,7 @@
+mutation deleteChatRoom($id: uuid!,) {
+  delete_chat_rooms_by_pk(id: $id) {
+    id
+  }
+}
+
+

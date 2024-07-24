@@ -1,4 +1,3 @@
-import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateChatRoomMutation } from "../../lib/graphql";
@@ -74,7 +73,7 @@ const CreateChatRoom = () => {
               </div>
               <div className="flex w-full flex-col items-center justify-end gap-4 md:flex-row md:gap-6">
                 <button
-                  className="w-full p-3 text-center font-bold shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e]"
+                  className="w-full p-3 text-center font-bold border-2 shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e]"
                   onClick={() => {
                     navigate("/");
                   }}

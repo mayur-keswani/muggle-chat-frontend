@@ -1,5 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
+  useDeleteChatRoomMutation,
   useGetChatRoomMessagesSubscription,
   useJoinChatRoomMutation,
   useSendMessageToChatRoomMutation,
@@ -9,12 +10,19 @@ import { AuthContext } from "../../context/AuthContext";
 import toast from "react-hot-toast";
 
 type MessagePropsType = {
-  selectedRoom: { id: string; name: string; isMember: boolean };
+  selectedRoom: {
+    id: string;
+    name: string;
+    isMember: boolean;
+    amICreator: boolean;
+  };
   toggleSidedrawer: (e: React.FormEvent) => void;
+  onDeleteChatRoom: () => void
 };
 
-const Messages = ({ selectedRoom, toggleSidedrawer }: MessagePropsType) => {
+const Messages = ({ selectedRoom, toggleSidedrawer, onDeleteChatRoom: unSelectedSelectedRoom }: MessagePropsType) => {
   const [content, setContent] = useState("");
+  const dropdownRef = useRef<null | HTMLDivElement>(null);
   const { user } = useContext(AuthContext);
 
   const { data, loading: isMessagesLoading } =
@@ -28,6 +36,7 @@ const Messages = ({ selectedRoom, toggleSidedrawer }: MessagePropsType) => {
     useSendMessageToChatRoomMutation();
 
   const [joinChatRoom, { loading: isJoining }] = useJoinChatRoomMutation();
+  const [deleteChatRoom, { loading: isDeleting }] = useDeleteChatRoomMutation()
 
   const sendMessageHandler = async (content: string) => {
     try {
@@ -40,29 +49,44 @@ const Messages = ({ selectedRoom, toggleSidedrawer }: MessagePropsType) => {
           content,
         },
       });
-      
+
       setContent("");
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const joinChatRoomHandler = async (chatRoomId: string) => {
     try {
-      const {data} = await joinChatRoom({
+      const { data } = await joinChatRoom({
         variables: {
           chat_room_id: chatRoomId,
         },
       });
-      if(data?.insert_user_chat_rooms_one){
-        toast.success(`Joined to ${selectedRoom?.name}`)
-      }else{
-        toast.error(`Failed to join to ${selectedRoom?.name}`)
+      if (data?.insert_user_chat_rooms_one) {
+        toast.success(`Joined to ${selectedRoom?.name}`);
+      } else {
+        toast.error(`Failed to join to ${selectedRoom?.name}`);
       }
     } catch (error) {
-      toast.error(`Failed to join to ${selectedRoom?.name}`)
+      toast.error(`Failed to join to ${selectedRoom?.name}`);
     }
   };
 
-  
+  const deleteChatRoomHandler = async (chatRoomId: string) => {
+    try {
+      const { data } = await deleteChatRoom({
+        variables: {
+          id: chatRoomId
+        }
+      })
+      if (data?.delete_chat_rooms_by_pk) {
+        toast.success(`Chat room ${selectedRoom?.name} deleted successfully`);
+        unSelectedSelectedRoom()
+      }
+      else { toast.error(`Failed to delete ${selectedRoom?.name}. Try again later!`); }
+    } catch (error) {
+      toast.error(`Failed to delete ${selectedRoom?.name}. Try again later!`);
+    }
+  }
   return (
     <>
       <div className="flex w-full items-center justify-between gap-2 border-b-[1px] p-4">
@@ -88,25 +112,15 @@ const Messages = ({ selectedRoom, toggleSidedrawer }: MessagePropsType) => {
 
           <p className="font-semibold text-white">{selectedRoom?.name}</p>
         </div>
-        <div className="flex items-center justify-end gap-4">
-          <button className="hidden h-10 w-10 flex-shrink-0 items-center justify-center border-[1px] border-white p-1 md:inline-flex">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              aria-hidden="true"
-              className="h-5 w-5 text-white"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z"
-              ></path>
-            </svg>
-          </button>
-          <button className="inline-flex h-7 w-7 flex-shrink-0 items-center justify-center border-[1px] border-white p-1 md:h-10 md:w-10">
+        {selectedRoom?.amICreator && <div className="relative flex items-center justify-end gap-4">
+          <button
+            onClick={() => {
+              if (dropdownRef.current) {
+                dropdownRef.current.classList.toggle("hidden");
+              }
+            }}
+            className="inline-flex h-7 w-7 flex-shrink-0 items-center justify-center border-[1px] border-white p-1 md:h-10 md:w-10"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -123,7 +137,27 @@ const Messages = ({ selectedRoom, toggleSidedrawer }: MessagePropsType) => {
               ></path>
             </svg>
           </button>
-        </div>
+          <div
+            ref={dropdownRef}
+            className="z-10 hidden absolute top-10 right-5  bg-slate-700 divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+          >
+
+            <ul
+              className="py-2 text-sm text-gray-700 "
+              aria-labelledby="avatarButton"
+            >
+              <li>
+                <button
+                  onClick={() => { deleteChatRoomHandler(selectedRoom?.id) }}
+                  disabled={isDeleting}
+                  className="block px-4 py-2 w-full h-full text-red-600  font-bold hover:bg-slate-900 "
+                >
+                  {isDeleting ? "Deleting...":"Delete"}
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>}
       </div>
       <div className="relative h-[calc(100vh-150px)] w-full p-0 md:h-[calc(100vh-158px)] md:p-4">
         <div className="flex h-[calc(100%-53px)] w-full flex-col-reverse gap-8 overflow-y-auto px-2 py-4 md:h-[calc(100%-90px)] md:p-0">
@@ -135,9 +169,8 @@ const Messages = ({ selectedRoom, toggleSidedrawer }: MessagePropsType) => {
             data?.messages.map((message) => (
               <div
                 key={message?.id}
-                className={`flex min-w-[150px] max-w-[80%] items-start justify-start gap-2 text-white md:max-w-[70%] ${
-                  message.user_id === user.userId && "ml-auto flex-row-reverse"
-                }`}
+                className={`flex min-w-[150px] max-w-[80%] items-start justify-start gap-2 text-white md:max-w-[70%] ${message.user_id === user.userId && "ml-auto flex-row-reverse"
+                  }`}
               >
                 <div className="flex w-full max-w-[70%] flex-col gap-2">
                   <div className="flex flex-row justify-start space-x-2 items-center">
@@ -167,7 +200,7 @@ const Messages = ({ selectedRoom, toggleSidedrawer }: MessagePropsType) => {
         </div>
 
         <>
-          {selectedRoom?.isMember ? (
+          {selectedRoom?.isMember || selectedRoom?.amICreator ? (
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -249,7 +282,7 @@ const Messages = ({ selectedRoom, toggleSidedrawer }: MessagePropsType) => {
                   // navigate('/join-chat-room')
                 }}
               >
-                {isJoining?<Spinner/>:"Join Chat Room"}
+                {isJoining ? <Spinner /> : "Join Chat Room"}
               </button>
             </div>
           )}

@@ -2118,6 +2118,13 @@ export type CreateChatRoomMutationVariables = Exact<{
 
 export type CreateChatRoomMutation = { __typename?: 'mutation_root', insert_chat_rooms_one?: { __typename?: 'chat_rooms', id: any, name: string } | null };
 
+export type DeleteChatRoomMutationVariables = Exact<{
+  id: Scalars['uuid']['input'];
+}>;
+
+
+export type DeleteChatRoomMutation = { __typename?: 'mutation_root', delete_chat_rooms_by_pk?: { __typename?: 'chat_rooms', id: any } | null };
+
 export type JoinChatRoomMutationVariables = Exact<{
   chat_room_id: Scalars['uuid']['input'];
 }>;
@@ -2150,10 +2157,10 @@ export type SendMessageToChatRoomMutationVariables = Exact<{
 
 export type SendMessageToChatRoomMutation = { __typename?: 'mutation_root', insert_messages_one?: { __typename?: 'messages', chat_room_id: any, content?: string | null, created_at: any, id: any } | null };
 
-export type GetChatRoomsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetChatRoomsSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetChatRoomsQuery = { __typename?: 'query_root', chat_rooms: Array<{ __typename?: 'chat_rooms', id: any, name: string, user: { __typename?: 'users', username?: string | null } }> };
+export type GetChatRoomsSubscription = { __typename?: 'subscription_root', chat_rooms: Array<{ __typename?: 'chat_rooms', id: any, name: string, created_by: any, user: { __typename?: 'users', username?: string | null } }> };
 
 export type GetChatRoomMessagesSubscriptionVariables = Exact<{
   chatRoomId: Scalars['uuid']['input'];
@@ -2204,6 +2211,39 @@ export function useCreateChatRoomMutation(baseOptions?: Apollo.MutationHookOptio
 export type CreateChatRoomMutationHookResult = ReturnType<typeof useCreateChatRoomMutation>;
 export type CreateChatRoomMutationResult = Apollo.MutationResult<CreateChatRoomMutation>;
 export type CreateChatRoomMutationOptions = Apollo.BaseMutationOptions<CreateChatRoomMutation, CreateChatRoomMutationVariables>;
+export const DeleteChatRoomDocument = gql`
+    mutation deleteChatRoom($id: uuid!) {
+  delete_chat_rooms_by_pk(id: $id) {
+    id
+  }
+}
+    `;
+export type DeleteChatRoomMutationFn = Apollo.MutationFunction<DeleteChatRoomMutation, DeleteChatRoomMutationVariables>;
+
+/**
+ * __useDeleteChatRoomMutation__
+ *
+ * To run a mutation, you first call `useDeleteChatRoomMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteChatRoomMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteChatRoomMutation, { data, loading, error }] = useDeleteChatRoomMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteChatRoomMutation(baseOptions?: Apollo.MutationHookOptions<DeleteChatRoomMutation, DeleteChatRoomMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteChatRoomMutation, DeleteChatRoomMutationVariables>(DeleteChatRoomDocument, options);
+      }
+export type DeleteChatRoomMutationHookResult = ReturnType<typeof useDeleteChatRoomMutation>;
+export type DeleteChatRoomMutationResult = Apollo.MutationResult<DeleteChatRoomMutation>;
+export type DeleteChatRoomMutationOptions = Apollo.BaseMutationOptions<DeleteChatRoomMutation, DeleteChatRoomMutationVariables>;
 export const JoinChatRoomDocument = gql`
     mutation joinChatRoom($chat_room_id: uuid!) {
   insert_user_chat_rooms_one(object: {chat_room_id: $chat_room_id}) {
@@ -2354,10 +2394,11 @@ export type SendMessageToChatRoomMutationHookResult = ReturnType<typeof useSendM
 export type SendMessageToChatRoomMutationResult = Apollo.MutationResult<SendMessageToChatRoomMutation>;
 export type SendMessageToChatRoomMutationOptions = Apollo.BaseMutationOptions<SendMessageToChatRoomMutation, SendMessageToChatRoomMutationVariables>;
 export const GetChatRoomsDocument = gql`
-    query getChatRooms {
+    subscription getChatRooms {
   chat_rooms {
     id
     name
+    created_by
     user {
       username
     }
@@ -2366,36 +2407,26 @@ export const GetChatRoomsDocument = gql`
     `;
 
 /**
- * __useGetChatRoomsQuery__
+ * __useGetChatRoomsSubscription__
  *
- * To run a query within a React component, call `useGetChatRoomsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetChatRoomsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetChatRoomsSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useGetChatRoomsSubscription` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetChatRoomsQuery({
+ * const { data, loading, error } = useGetChatRoomsSubscription({
  *   variables: {
  *   },
  * });
  */
-export function useGetChatRoomsQuery(baseOptions?: Apollo.QueryHookOptions<GetChatRoomsQuery, GetChatRoomsQueryVariables>) {
+export function useGetChatRoomsSubscription(baseOptions?: Apollo.SubscriptionHookOptions<GetChatRoomsSubscription, GetChatRoomsSubscriptionVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetChatRoomsQuery, GetChatRoomsQueryVariables>(GetChatRoomsDocument, options);
+        return Apollo.useSubscription<GetChatRoomsSubscription, GetChatRoomsSubscriptionVariables>(GetChatRoomsDocument, options);
       }
-export function useGetChatRoomsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetChatRoomsQuery, GetChatRoomsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetChatRoomsQuery, GetChatRoomsQueryVariables>(GetChatRoomsDocument, options);
-        }
-export function useGetChatRoomsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetChatRoomsQuery, GetChatRoomsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetChatRoomsQuery, GetChatRoomsQueryVariables>(GetChatRoomsDocument, options);
-        }
-export type GetChatRoomsQueryHookResult = ReturnType<typeof useGetChatRoomsQuery>;
-export type GetChatRoomsLazyQueryHookResult = ReturnType<typeof useGetChatRoomsLazyQuery>;
-export type GetChatRoomsSuspenseQueryHookResult = ReturnType<typeof useGetChatRoomsSuspenseQuery>;
-export type GetChatRoomsQueryResult = Apollo.QueryResult<GetChatRoomsQuery, GetChatRoomsQueryVariables>;
+export type GetChatRoomsSubscriptionHookResult = ReturnType<typeof useGetChatRoomsSubscription>;
+export type GetChatRoomsSubscriptionResult = Apollo.SubscriptionResult<GetChatRoomsSubscription>;
 export const GetChatRoomMessagesDocument = gql`
     subscription getChatRoomMessages($chatRoomId: uuid!) {
   messages(

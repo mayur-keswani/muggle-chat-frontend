@@ -1,15 +1,17 @@
 import React, { useMemo, useState } from "react";
+import { Chat_Rooms } from "../../lib/graphql";
 
+type ChatRoomType = {
+  id: any;
+  name: string;
+  created_by:string;
+  user: {
+    username?: string | null;
+  }
+}
 type RoomsPropsType = {
-  rooms: {
-    id: any;
-    name: string;
-    user: {
-      username?: string | null;
-    };
-  }[];
-  onSelect: (selectedRoomId: string, selectedRoomName: string) => void;
-
+  rooms: ChatRoomType[];
+  onSelect: (selectedRoomId: string, selectedRoomName: string,selectedRoomCreatorId:string) => void;
   selectedRoomId: string | null;
 };
 
@@ -43,7 +45,7 @@ const Rooms = ({ rooms, onSelect, selectedRoomId }: RoomsPropsType) => {
             strokeWidth="1.5"
             stroke="currentColor"
             aria-hidden="true"
-            className="h-5 w-5 text-white"
+            className="h-5 w-5 text-red"
           >
             <path
               strokeLinecap="round"
@@ -71,17 +73,17 @@ const Rooms = ({ rooms, onSelect, selectedRoomId }: RoomsPropsType) => {
         </button> */}
       </div>
       <ul className="flex h-[calc(100%-140px)] w-full flex-col items-start justify-start divide-y-[1px] divide-white overflow-y-auto md:h-[calc(100%-73px)]">
-        {filteredRooms.map((chatRoom: any) => (
+        {filteredRooms.map((chatRoom: ChatRoomType) => (
           <li
             key={chatRoom.id}
             onClick={() => {
-              onSelect(chatRoom.id, chatRoom.name);
+              onSelect(chatRoom.id, chatRoom.name, chatRoom.created_by);
             }}
             className={`w-full cursor-pointer border-b-2 border-purple-200 p-4 ${
               selectedRoomId && selectedRoomId === chatRoom?.id
-                ? "bg-purple-900"
+                ? "bg-slate-800"
                 : "bg-[#232323]"
-            } hover:bg-purple-900 md:p-6`}
+            } hover:bg-slate-800 md:p-6`}
           >
             <div className="flex w-full items-start justify-start gap-3 md:gap-4">
               <div className="flex w-full flex-col items-start justify-start gap-1 truncate text-ellipsis">

@@ -1,7 +1,8 @@
-query getChatRooms {
+subscription getChatRooms {
   chat_rooms {
     id
     name
+    created_by
     user {
       username
     }
