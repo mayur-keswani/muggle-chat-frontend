@@ -1,0 +1,31 @@
+
+/* Change the background color of the picker */
+.EmojiPickerReact {
+    position: absolute !important;
+    top:-310px;
+    height: 300px !important;
+    width: 330px !important;
+    overflow: scroll;
+    right: 25px;
+  }
+  
+  /* Style the emoji search input */
+  .EmojiPickerReact .emoji-search input {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+  }
+  
+  /* Style the emoji categories bar */
+  .EmojiPickerReact .emoji-categories {
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* Style individual emojis */
+  .EmojiPickerReact .emoji-scroll-wrapper .emoji-group .emoji-category .emoji {
+    margin: 4px;
+  }
+  

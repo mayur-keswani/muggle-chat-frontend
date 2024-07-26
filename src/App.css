@@ -1,4 +1,8 @@
 .App {
   text-align: center;
 }
+path {
+  --tw-text-opacity: 1;
+  color: rgb(126 34 206 / var(--tw-text-opacity));
+}
 

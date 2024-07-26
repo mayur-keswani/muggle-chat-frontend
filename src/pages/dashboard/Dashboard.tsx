@@ -28,7 +28,7 @@ const Dashboard = () => {
   },[joinedChatRoom,selectedRoom?.id])
 
   return (
-    <main className="relative h-[calc(100vh-77px)] w-full top-[77px] md:mt-[83px] md:h-[calc(100vh-83px)] bg-[#121212] ">
+    <main className="relative h-[calc(100vh-77px)] w-full md:h-[calc(100vh-83px)] bg-[#121212] ">
       {loading ? (
         <div>Loading ...</div>
       ) : data?.chat_rooms && data?.chat_rooms?.length > 0 ? (

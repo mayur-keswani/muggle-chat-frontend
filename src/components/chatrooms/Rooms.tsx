@@ -45,7 +45,7 @@ const Rooms = ({ rooms, onSelect, selectedRoomId }: RoomsPropsType) => {
             strokeWidth="1.5"
             stroke="currentColor"
             aria-hidden="true"
-            className="h-5 w-5 text-red"
+            className="h-5 w-5"
           >
             <path
               strokeLinecap="round"

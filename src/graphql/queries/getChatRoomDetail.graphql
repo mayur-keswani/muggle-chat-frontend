@@ -1,0 +1,7 @@
+query getChatRoomDetail($id: uuid!) {
+  chat_rooms_by_pk(id: $id) {
+    name
+    id
+    created_at
+  }
+}

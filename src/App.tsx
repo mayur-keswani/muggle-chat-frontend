@@ -30,6 +30,7 @@ function App() {
         >
           <Route index element={<Dashboard />} />
           <Route path="/create-chat-room" element={<CreateChatRoom />} />
+          <Route path="/create-chat-room/:id" Component={CreateChatRoom} />
           <Route path="/join-chat-room" element={<JoinChatRoom />} />
         </Route>
       </Routes>
