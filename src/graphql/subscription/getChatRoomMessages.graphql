@@ -7,5 +7,11 @@ subscription getChatRoomMessages($chatRoomId: uuid!) {
     user {
       username
     }
+    message_attachments {
+      filetype
+      id
+      url
+      filename
+    }
   }
 }

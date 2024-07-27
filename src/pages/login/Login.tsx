@@ -20,7 +20,7 @@ const Login = () => {
       const {data} =await loginUser({variables:{email,password}});
       if(data?.login?.accessToken){
         const user = data?.login
-        toast.success("Registed Successfully!!");
+        toast.success("Welcome Back to Muggle Discord");
         updateUser({username:user.username,userId:user.userId,email:user.email,accessToken:user.accessToken,roleType:user.roleType})
         navigate('/')
       }

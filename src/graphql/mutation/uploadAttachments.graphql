@@ -1,0 +1,7 @@
+mutation uploadAttachment($base64: String!, $filename: String!, $filetype: String!) {
+  upload(attachment: {base64: $base64, filename: $filename, filetype: $filetype}) {
+    url
+    filename
+    filetype
+  }
+}

@@ -19,6 +19,19 @@ export type Scalars = {
   uuid: { input: any; output: any; }
 };
 
+export type AttachmentInput = {
+  base64: Scalars['String']['input'];
+  filename: Scalars['String']['input'];
+  filetype: Scalars['String']['input'];
+};
+
+export type AttachmentOutput = {
+  __typename?: 'AttachmentOutput';
+  filename: Scalars['String']['output'];
+  filetype: Scalars['String']['output'];
+  url: Scalars['String']['output'];
+};
+
 /** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
 export type Boolean_Comparison_Exp = {
   _eq?: InputMaybe<Scalars['Boolean']['input']>;
@@ -455,6 +468,238 @@ export enum Cursor_Ordering {
   Desc = 'DESC'
 }
 
+/** columns and relationships of "message_attachments" */
+export type Message_Attachments = {
+  __typename?: 'message_attachments';
+  created_at: Scalars['timestamptz']['output'];
+  filename: Scalars['String']['output'];
+  filetype: Scalars['String']['output'];
+  id: Scalars['uuid']['output'];
+  /** An object relationship */
+  message: Messages;
+  message_id: Scalars['uuid']['output'];
+  url: Scalars['String']['output'];
+};
+
+/** aggregated selection of "message_attachments" */
+export type Message_Attachments_Aggregate = {
+  __typename?: 'message_attachments_aggregate';
+  aggregate?: Maybe<Message_Attachments_Aggregate_Fields>;
+  nodes: Array<Message_Attachments>;
+};
+
+export type Message_Attachments_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Message_Attachments_Aggregate_Bool_Exp_Count>;
+};
+
+export type Message_Attachments_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Message_Attachments_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Message_Attachments_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "message_attachments" */
+export type Message_Attachments_Aggregate_Fields = {
+  __typename?: 'message_attachments_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<Message_Attachments_Max_Fields>;
+  min?: Maybe<Message_Attachments_Min_Fields>;
+};
+
+
+/** aggregate fields of "message_attachments" */
+export type Message_Attachments_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Message_Attachments_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** order by aggregate values of table "message_attachments" */
+export type Message_Attachments_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Message_Attachments_Max_Order_By>;
+  min?: InputMaybe<Message_Attachments_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "message_attachments" */
+export type Message_Attachments_Arr_Rel_Insert_Input = {
+  data: Array<Message_Attachments_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Message_Attachments_On_Conflict>;
+};
+
+/** Boolean expression to filter rows from the table "message_attachments". All fields are combined with a logical 'AND'. */
+export type Message_Attachments_Bool_Exp = {
+  _and?: InputMaybe<Array<Message_Attachments_Bool_Exp>>;
+  _not?: InputMaybe<Message_Attachments_Bool_Exp>;
+  _or?: InputMaybe<Array<Message_Attachments_Bool_Exp>>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  filename?: InputMaybe<String_Comparison_Exp>;
+  filetype?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  message?: InputMaybe<Messages_Bool_Exp>;
+  message_id?: InputMaybe<Uuid_Comparison_Exp>;
+  url?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "message_attachments" */
+export enum Message_Attachments_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  MessageAttachmentsPkey = 'message_attachments_pkey'
+}
+
+/** input type for inserting data into table "message_attachments" */
+export type Message_Attachments_Insert_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  filename?: InputMaybe<Scalars['String']['input']>;
+  filetype?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  message?: InputMaybe<Messages_Obj_Rel_Insert_Input>;
+  message_id?: InputMaybe<Scalars['uuid']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate max on columns */
+export type Message_Attachments_Max_Fields = {
+  __typename?: 'message_attachments_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  filename?: Maybe<Scalars['String']['output']>;
+  filetype?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  message_id?: Maybe<Scalars['uuid']['output']>;
+  url?: Maybe<Scalars['String']['output']>;
+};
+
+/** order by max() on columns of table "message_attachments" */
+export type Message_Attachments_Max_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  filename?: InputMaybe<Order_By>;
+  filetype?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  message_id?: InputMaybe<Order_By>;
+  url?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Message_Attachments_Min_Fields = {
+  __typename?: 'message_attachments_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  filename?: Maybe<Scalars['String']['output']>;
+  filetype?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  message_id?: Maybe<Scalars['uuid']['output']>;
+  url?: Maybe<Scalars['String']['output']>;
+};
+
+/** order by min() on columns of table "message_attachments" */
+export type Message_Attachments_Min_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  filename?: InputMaybe<Order_By>;
+  filetype?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  message_id?: InputMaybe<Order_By>;
+  url?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "message_attachments" */
+export type Message_Attachments_Mutation_Response = {
+  __typename?: 'message_attachments_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Message_Attachments>;
+};
+
+/** on_conflict condition type for table "message_attachments" */
+export type Message_Attachments_On_Conflict = {
+  constraint: Message_Attachments_Constraint;
+  update_columns?: Array<Message_Attachments_Update_Column>;
+  where?: InputMaybe<Message_Attachments_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "message_attachments". */
+export type Message_Attachments_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  filename?: InputMaybe<Order_By>;
+  filetype?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  message?: InputMaybe<Messages_Order_By>;
+  message_id?: InputMaybe<Order_By>;
+  url?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: message_attachments */
+export type Message_Attachments_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "message_attachments" */
+export enum Message_Attachments_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Filename = 'filename',
+  /** column name */
+  Filetype = 'filetype',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  MessageId = 'message_id',
+  /** column name */
+  Url = 'url'
+}
+
+/** input type for updating data in table "message_attachments" */
+export type Message_Attachments_Set_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  filename?: InputMaybe<Scalars['String']['input']>;
+  filetype?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  message_id?: InputMaybe<Scalars['uuid']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Streaming cursor of the table "message_attachments" */
+export type Message_Attachments_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Message_Attachments_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Message_Attachments_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  filename?: InputMaybe<Scalars['String']['input']>;
+  filetype?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  message_id?: InputMaybe<Scalars['uuid']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** update columns of table "message_attachments" */
+export enum Message_Attachments_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Filename = 'filename',
+  /** column name */
+  Filetype = 'filetype',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  MessageId = 'message_id',
+  /** column name */
+  Url = 'url'
+}
+
+export type Message_Attachments_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Message_Attachments_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Message_Attachments_Bool_Exp;
+};
+
 /** columns and relationships of "messages" */
 export type Messages = {
   __typename?: 'messages';
@@ -464,9 +709,33 @@ export type Messages = {
   content?: Maybe<Scalars['String']['output']>;
   created_at: Scalars['timestamptz']['output'];
   id: Scalars['uuid']['output'];
+  /** An array relationship */
+  message_attachments: Array<Message_Attachments>;
+  /** An aggregate relationship */
+  message_attachments_aggregate: Message_Attachments_Aggregate;
   /** An object relationship */
   user: Users;
   user_id: Scalars['uuid']['output'];
+};
+
+
+/** columns and relationships of "messages" */
+export type MessagesMessage_AttachmentsArgs = {
+  distinct_on?: InputMaybe<Array<Message_Attachments_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Message_Attachments_Order_By>>;
+  where?: InputMaybe<Message_Attachments_Bool_Exp>;
+};
+
+
+/** columns and relationships of "messages" */
+export type MessagesMessage_Attachments_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Message_Attachments_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Message_Attachments_Order_By>>;
+  where?: InputMaybe<Message_Attachments_Bool_Exp>;
 };
 
 /** aggregated selection of "messages" */
@@ -526,6 +795,8 @@ export type Messages_Bool_Exp = {
   content?: InputMaybe<String_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  message_attachments?: InputMaybe<Message_Attachments_Bool_Exp>;
+  message_attachments_aggregate?: InputMaybe<Message_Attachments_Aggregate_Bool_Exp>;
   user?: InputMaybe<Users_Bool_Exp>;
   user_id?: InputMaybe<Uuid_Comparison_Exp>;
 };
@@ -543,6 +814,7 @@ export type Messages_Insert_Input = {
   content?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  message_attachments?: InputMaybe<Message_Attachments_Arr_Rel_Insert_Input>;
   user?: InputMaybe<Users_Obj_Rel_Insert_Input>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
 };
@@ -594,6 +866,13 @@ export type Messages_Mutation_Response = {
   returning: Array<Messages>;
 };
 
+/** input type for inserting object relation for remote table "messages" */
+export type Messages_Obj_Rel_Insert_Input = {
+  data: Messages_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Messages_On_Conflict>;
+};
+
 /** on_conflict condition type for table "messages" */
 export type Messages_On_Conflict = {
   constraint: Messages_Constraint;
@@ -608,6 +887,7 @@ export type Messages_Order_By = {
   content?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  message_attachments_aggregate?: InputMaybe<Message_Attachments_Aggregate_Order_By>;
   user?: InputMaybe<Users_Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
@@ -685,6 +965,10 @@ export type Mutation_Root = {
   delete_chat_rooms?: Maybe<Chat_Rooms_Mutation_Response>;
   /** delete single row from the table: "chat_rooms" */
   delete_chat_rooms_by_pk?: Maybe<Chat_Rooms>;
+  /** delete data from the table: "message_attachments" */
+  delete_message_attachments?: Maybe<Message_Attachments_Mutation_Response>;
+  /** delete single row from the table: "message_attachments" */
+  delete_message_attachments_by_pk?: Maybe<Message_Attachments>;
   /** delete data from the table: "messages" */
   delete_messages?: Maybe<Messages_Mutation_Response>;
   /** delete single row from the table: "messages" */
@@ -705,6 +989,10 @@ export type Mutation_Root = {
   insert_chat_rooms?: Maybe<Chat_Rooms_Mutation_Response>;
   /** insert a single row into the table: "chat_rooms" */
   insert_chat_rooms_one?: Maybe<Chat_Rooms>;
+  /** insert data into the table: "message_attachments" */
+  insert_message_attachments?: Maybe<Message_Attachments_Mutation_Response>;
+  /** insert a single row into the table: "message_attachments" */
+  insert_message_attachments_one?: Maybe<Message_Attachments>;
   /** insert data into the table: "messages" */
   insert_messages?: Maybe<Messages_Mutation_Response>;
   /** insert a single row into the table: "messages" */
@@ -729,6 +1017,12 @@ export type Mutation_Root = {
   update_chat_rooms_by_pk?: Maybe<Chat_Rooms>;
   /** update multiples rows of table: "chat_rooms" */
   update_chat_rooms_many?: Maybe<Array<Maybe<Chat_Rooms_Mutation_Response>>>;
+  /** update data of the table: "message_attachments" */
+  update_message_attachments?: Maybe<Message_Attachments_Mutation_Response>;
+  /** update single row of the table: "message_attachments" */
+  update_message_attachments_by_pk?: Maybe<Message_Attachments>;
+  /** update multiples rows of table: "message_attachments" */
+  update_message_attachments_many?: Maybe<Array<Maybe<Message_Attachments_Mutation_Response>>>;
   /** update data of the table: "messages" */
   update_messages?: Maybe<Messages_Mutation_Response>;
   /** update single row of the table: "messages" */
@@ -753,6 +1047,7 @@ export type Mutation_Root = {
   update_users_by_pk?: Maybe<Users>;
   /** update multiples rows of table: "users" */
   update_users_many?: Maybe<Array<Maybe<Users_Mutation_Response>>>;
+  upload: AttachmentOutput;
 };
 
 
@@ -764,6 +1059,18 @@ export type Mutation_RootDelete_Chat_RoomsArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Chat_Rooms_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Message_AttachmentsArgs = {
+  where: Message_Attachments_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Message_Attachments_By_PkArgs = {
   id: Scalars['uuid']['input'];
 };
 
@@ -827,6 +1134,20 @@ export type Mutation_RootInsert_Chat_RoomsArgs = {
 export type Mutation_RootInsert_Chat_Rooms_OneArgs = {
   object: Chat_Rooms_Insert_Input;
   on_conflict?: InputMaybe<Chat_Rooms_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Message_AttachmentsArgs = {
+  objects: Array<Message_Attachments_Insert_Input>;
+  on_conflict?: InputMaybe<Message_Attachments_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Message_Attachments_OneArgs = {
+  object: Message_Attachments_Insert_Input;
+  on_conflict?: InputMaybe<Message_Attachments_On_Conflict>;
 };
 
 
@@ -919,6 +1240,26 @@ export type Mutation_RootUpdate_Chat_Rooms_ManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Message_AttachmentsArgs = {
+  _set?: InputMaybe<Message_Attachments_Set_Input>;
+  where: Message_Attachments_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Message_Attachments_By_PkArgs = {
+  _set?: InputMaybe<Message_Attachments_Set_Input>;
+  pk_columns: Message_Attachments_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Message_Attachments_ManyArgs = {
+  updates: Array<Message_Attachments_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_MessagesArgs = {
   _set?: InputMaybe<Messages_Set_Input>;
   where: Messages_Bool_Exp;
@@ -997,6 +1338,12 @@ export type Mutation_RootUpdate_Users_ManyArgs = {
   updates: Array<Users_Updates>;
 };
 
+
+/** mutation root */
+export type Mutation_RootUploadArgs = {
+  attachment: AttachmentInput;
+};
+
 /** column ordering options */
 export enum Order_By {
   /** in ascending order, nulls last */
@@ -1021,6 +1368,12 @@ export type Query_Root = {
   chat_rooms_aggregate: Chat_Rooms_Aggregate;
   /** fetch data from the table: "chat_rooms" using primary key columns */
   chat_rooms_by_pk?: Maybe<Chat_Rooms>;
+  /** An array relationship */
+  message_attachments: Array<Message_Attachments>;
+  /** An aggregate relationship */
+  message_attachments_aggregate: Message_Attachments_Aggregate;
+  /** fetch data from the table: "message_attachments" using primary key columns */
+  message_attachments_by_pk?: Maybe<Message_Attachments>;
   /** An array relationship */
   messages: Array<Messages>;
   /** An aggregate relationship */
@@ -1067,6 +1420,29 @@ export type Query_RootChat_Rooms_AggregateArgs = {
 
 
 export type Query_RootChat_Rooms_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Query_RootMessage_AttachmentsArgs = {
+  distinct_on?: InputMaybe<Array<Message_Attachments_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Message_Attachments_Order_By>>;
+  where?: InputMaybe<Message_Attachments_Bool_Exp>;
+};
+
+
+export type Query_RootMessage_Attachments_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Message_Attachments_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Message_Attachments_Order_By>>;
+  where?: InputMaybe<Message_Attachments_Bool_Exp>;
+};
+
+
+export type Query_RootMessage_Attachments_By_PkArgs = {
   id: Scalars['uuid']['input'];
 };
 
@@ -1358,6 +1734,14 @@ export type Subscription_Root = {
   /** fetch data from the table in a streaming manner: "chat_rooms" */
   chat_rooms_stream: Array<Chat_Rooms>;
   /** An array relationship */
+  message_attachments: Array<Message_Attachments>;
+  /** An aggregate relationship */
+  message_attachments_aggregate: Message_Attachments_Aggregate;
+  /** fetch data from the table: "message_attachments" using primary key columns */
+  message_attachments_by_pk?: Maybe<Message_Attachments>;
+  /** fetch data from the table in a streaming manner: "message_attachments" */
+  message_attachments_stream: Array<Message_Attachments>;
+  /** An array relationship */
   messages: Array<Messages>;
   /** An aggregate relationship */
   messages_aggregate: Messages_Aggregate;
@@ -1419,6 +1803,36 @@ export type Subscription_RootChat_Rooms_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Chat_Rooms_Stream_Cursor_Input>>;
   where?: InputMaybe<Chat_Rooms_Bool_Exp>;
+};
+
+
+export type Subscription_RootMessage_AttachmentsArgs = {
+  distinct_on?: InputMaybe<Array<Message_Attachments_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Message_Attachments_Order_By>>;
+  where?: InputMaybe<Message_Attachments_Bool_Exp>;
+};
+
+
+export type Subscription_RootMessage_Attachments_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Message_Attachments_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Message_Attachments_Order_By>>;
+  where?: InputMaybe<Message_Attachments_Bool_Exp>;
+};
+
+
+export type Subscription_RootMessage_Attachments_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootMessage_Attachments_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Message_Attachments_Stream_Cursor_Input>>;
+  where?: InputMaybe<Message_Attachments_Bool_Exp>;
 };
 
 
@@ -2150,8 +2564,7 @@ export type RegisterMutationVariables = Exact<{
 export type RegisterMutation = { __typename?: 'mutation_root', register: { __typename?: 'RegisterOutput', email: string, accessToken: string, roleType: RoleType, userId: string, username: string } };
 
 export type SendMessageToChatRoomMutationVariables = Exact<{
-  chat_room_id?: InputMaybe<Scalars['uuid']['input']>;
-  content?: InputMaybe<Scalars['String']['input']>;
+  messages_insert_input?: InputMaybe<Messages_Insert_Input>;
 }>;
 
 
@@ -2164,6 +2577,15 @@ export type UpdateChatRoomMutationVariables = Exact<{
 
 
 export type UpdateChatRoomMutation = { __typename?: 'mutation_root', update_chat_rooms_by_pk?: { __typename?: 'chat_rooms', id: any, name: string, updated_at?: any | null } | null };
+
+export type UploadAttachmentMutationVariables = Exact<{
+  base64: Scalars['String']['input'];
+  filename: Scalars['String']['input'];
+  filetype: Scalars['String']['input'];
+}>;
+
+
+export type UploadAttachmentMutation = { __typename?: 'mutation_root', upload: { __typename?: 'AttachmentOutput', url: string, filename: string, filetype: string } };
 
 export type GetChatRoomDetailQueryVariables = Exact<{
   id: Scalars['uuid']['input'];
@@ -2182,7 +2604,7 @@ export type GetChatRoomMessagesSubscriptionVariables = Exact<{
 }>;
 
 
-export type GetChatRoomMessagesSubscription = { __typename?: 'subscription_root', messages: Array<{ __typename?: 'messages', id: any, user_id: any, created_at: any, content?: string | null, user: { __typename?: 'users', username?: string | null } }> };
+export type GetChatRoomMessagesSubscription = { __typename?: 'subscription_root', messages: Array<{ __typename?: 'messages', id: any, user_id: any, created_at: any, content?: string | null, user: { __typename?: 'users', username?: string | null }, message_attachments: Array<{ __typename?: 'message_attachments', filetype: string, id: any, url: string, filename: string }> }> };
 
 export type GetJoinedChatRoomsSubscriptionVariables = Exact<{
   user_id: Scalars['uuid']['input'];
@@ -2372,8 +2794,8 @@ export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const SendMessageToChatRoomDocument = gql`
-    mutation sendMessageToChatRoom($chat_room_id: uuid = "", $content: String = "") {
-  insert_messages_one(object: {content: $content, chat_room_id: $chat_room_id}) {
+    mutation sendMessageToChatRoom($messages_insert_input: messages_insert_input = {}) {
+  insert_messages_one(object: $messages_insert_input) {
     chat_room_id
     content
     created_at
@@ -2396,8 +2818,7 @@ export type SendMessageToChatRoomMutationFn = Apollo.MutationFunction<SendMessag
  * @example
  * const [sendMessageToChatRoomMutation, { data, loading, error }] = useSendMessageToChatRoomMutation({
  *   variables: {
- *      chat_room_id: // value for 'chat_room_id'
- *      content: // value for 'content'
+ *      messages_insert_input: // value for 'messages_insert_input'
  *   },
  * });
  */
@@ -2444,6 +2865,43 @@ export function useUpdateChatRoomMutation(baseOptions?: Apollo.MutationHookOptio
 export type UpdateChatRoomMutationHookResult = ReturnType<typeof useUpdateChatRoomMutation>;
 export type UpdateChatRoomMutationResult = Apollo.MutationResult<UpdateChatRoomMutation>;
 export type UpdateChatRoomMutationOptions = Apollo.BaseMutationOptions<UpdateChatRoomMutation, UpdateChatRoomMutationVariables>;
+export const UploadAttachmentDocument = gql`
+    mutation uploadAttachment($base64: String!, $filename: String!, $filetype: String!) {
+  upload(attachment: {base64: $base64, filename: $filename, filetype: $filetype}) {
+    url
+    filename
+    filetype
+  }
+}
+    `;
+export type UploadAttachmentMutationFn = Apollo.MutationFunction<UploadAttachmentMutation, UploadAttachmentMutationVariables>;
+
+/**
+ * __useUploadAttachmentMutation__
+ *
+ * To run a mutation, you first call `useUploadAttachmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUploadAttachmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [uploadAttachmentMutation, { data, loading, error }] = useUploadAttachmentMutation({
+ *   variables: {
+ *      base64: // value for 'base64'
+ *      filename: // value for 'filename'
+ *      filetype: // value for 'filetype'
+ *   },
+ * });
+ */
+export function useUploadAttachmentMutation(baseOptions?: Apollo.MutationHookOptions<UploadAttachmentMutation, UploadAttachmentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UploadAttachmentMutation, UploadAttachmentMutationVariables>(UploadAttachmentDocument, options);
+      }
+export type UploadAttachmentMutationHookResult = ReturnType<typeof useUploadAttachmentMutation>;
+export type UploadAttachmentMutationResult = Apollo.MutationResult<UploadAttachmentMutation>;
+export type UploadAttachmentMutationOptions = Apollo.BaseMutationOptions<UploadAttachmentMutation, UploadAttachmentMutationVariables>;
 export const GetChatRoomDetailDocument = gql`
     query getChatRoomDetail($id: uuid!) {
   chat_rooms_by_pk(id: $id) {
@@ -2532,6 +2990,12 @@ export const GetChatRoomMessagesDocument = gql`
     content
     user {
       username
+    }
+    message_attachments {
+      filetype
+      id
+      url
+      filename
     }
   }
 }
