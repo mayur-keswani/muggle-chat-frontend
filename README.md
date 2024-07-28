@@ -1,4 +1,4 @@
-### Muggle Discord 
+### Muggle chat 
 #### Create and Join in Chat Room and based on your interest
 
 # 

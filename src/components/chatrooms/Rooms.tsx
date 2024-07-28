@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-import { Chat_Rooms } from "../../lib/graphql";
 
 type ChatRoomType = {
   id: any;

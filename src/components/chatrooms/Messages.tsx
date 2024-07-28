@@ -321,13 +321,13 @@ const Messages = ({
         {attachments?.length > 0 && (
           <div className="absolute bottom-[53px] left-0 md:bottom-[90px] h-[150px] w-full p-2 md:mr-4 rounded-t-xl rounded-b-3xl bg-gray-800">
             <span className="text-gray-500">Attachments</span>
-            <div className="flex justify-center items-center flex-row gap-2 h-full w-full overflow-auto">
+            <div className="flex justify-center items-start flex-row gap-2 h-full w-full overflow-auto">
               {attachments.map((attachment, index) => {
                 return (
                   <div className="relative inline-block h-2/3 min-w-[100px]">
                     <button
                       type="submit"
-                      className="right-0 bg-red-600 px-2 py-1 rounded-l-md text-white  absolute"
+                      className="right-0 bg-purple-600 px-2 py-1 rounded-l-sm text-white  absolute"
                       disabled={isUploading || isSendingMessage}
                       onClick={() => {
                         removeAttachmentsHanlder(index);

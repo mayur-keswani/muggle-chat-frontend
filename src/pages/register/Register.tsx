@@ -75,7 +75,7 @@ const Register = () => {
             />
           </div>
           
-          <button type="submit" disabled={loading || !username || !password || !email} className="w-full bg-[#ae7aff] p-3 text-center font-bold disabled:cursor-not-allowed text-black shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e]">
+          <button type="submit" disabled={loading || !username || !password || !email} className="w-full bg-[#ae7aff]  flex flex-row align-middle justify-center p-3 text-center font-bold disabled:cursor-not-allowed text-black shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e]">
             {loading? <Spinner/>:"Register"}
           </button>
 

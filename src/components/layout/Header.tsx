@@ -22,7 +22,7 @@ const Header = () => {
 
   return (
     <header className="z-10 mx-auto flex w-full max-w-full items-center justify-between border-b-[1px] border-b-slate-300 bg-[#121212] p-4 text-white lg:px-10">
-      <h1 className="text-xl font-extrabold md:text-3xl">Muggle Discord</h1>
+      <h1 className="text-xl font-extrabold md:text-3xl">Muggle Chat</h1>
       <div className="flex w-max flex-shrink-0 items-center justify-end gap-6">
     
         <button

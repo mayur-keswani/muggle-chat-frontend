@@ -6,7 +6,6 @@ import CreateChatRoom from "./pages/create-chat-room/CreateChatRoom";
 import Layout from "./components/layout/Layout";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
-import JoinChatRoom from "./pages/join-chat-room/JoinChatRoom";
 import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -31,7 +30,7 @@ function App() {
           <Route index element={<Dashboard />} />
           <Route path="/create-chat-room" element={<CreateChatRoom />} />
           <Route path="/create-chat-room/:id" Component={CreateChatRoom} />
-          <Route path="/join-chat-room" element={<JoinChatRoom />} />
+          {/* <Route path="/join-chat-room" element={<JoinChatRoom />} /> */}
         </Route>
       </Routes>
     </div>

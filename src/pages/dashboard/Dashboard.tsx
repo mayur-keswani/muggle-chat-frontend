@@ -7,7 +7,7 @@ import { AuthContext } from "../../context/AuthContext";
 
 const Dashboard = () => {
   const {user} =useContext(AuthContext)
-  const { data, loading, error } = useGetChatRoomsSubscription();
+  const { data, loading } = useGetChatRoomsSubscription();
   
   const {data:joinedChatRoom} = useGetJoinedChatRoomsSubscription({variables:{user_id:user.userId}})
   
@@ -23,7 +23,10 @@ const Dashboard = () => {
     if(joinedChatRoom && joinedChatRoom?.chat_rooms?.length>0 && selectedRoom?.id){
       console.log(joinedChatRoom?.chat_rooms)
       let isMember = joinedChatRoom.chat_rooms.findIndex(room=>room.id===selectedRoom?.id)>=0
-      setSelectedRoom({...selectedRoom,isMember})
+      setSelectedRoom((prevState)=>{
+        if(prevState) return {...prevState,isMember}
+        else return null
+      })
     }
   },[joinedChatRoom,selectedRoom?.id])
 

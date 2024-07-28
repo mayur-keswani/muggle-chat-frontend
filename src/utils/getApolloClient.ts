@@ -101,7 +101,7 @@ const getApolloLinks = (): (ApolloLink | RequestHandler)[] => {
   return Links;
 };
 const client = new ApolloClient({
-  name: "muggle-discord",
+  name: "muggle-chat",
   version: "1.0.0",
   link: ApolloLink.from(getApolloLinks()),
   cache: new InMemoryCache(),
