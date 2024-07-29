@@ -5,6 +5,11 @@
 This project was made only for learning Hasura (GraphQL platform that helps org. build data-driven applications and APIs). I want check, how authentication flow works, media files can be handled and most importantly how role based permissions can be set up . What can be it pros/cons if we use it for client projects.
 Plus, I want to give a try to Apollo client which acts most of similar like an interceptor of axios (that is used for intercepting and modifying requests and responses).
 
+Hasura : ***https://github.com/mayur-keswani/mugge-chat-hasura***
+
+Backend : ***https://github.com/mayur-keswani/mugge-chat-firebase-functions***
+
+
 #### Tech Stack Used
 
 - Hasura
